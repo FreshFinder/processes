@@ -1,7 +1,6 @@
 #!/bin/bash
-
-APP_PATH=/var/www/farms/frontend
-GIT_DIR=/var/repo/farms/frontend.git
+APP_PATH=/var/www/farms/reviews
+GIT_DIR=/var/repo/farms/reviews.git
 
 [[ -s "/usr/local/rvm/bin/rvm" ]] && . "/usr/local/rvm/bin/rvm"
 
@@ -12,14 +11,11 @@ cd ${APP_PATH}
 /usr/local/rvm/gems/ruby-2.0.0-p353@global/bin/bundle install --deployment
 echo "==========  BUNDLED  =========="
 
-
-echo "==========  COMPILING ASSETS  =========="
-/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake assets:precompile RAILS_ENV=production
+echo "==========  MIGRATING  =========="
+/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake db:migrate RAILS_ENV=production
+echo "==========  MIGRATED  =========="
 
 echo "==========  RESTARTING APP  =========="
 mkdir -p tmp
 touch tmp/restart.txt
 echo "==========  APP RESTARTED  =========="
-
-#/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake db:migrate
-#echo "MIGRATED"
