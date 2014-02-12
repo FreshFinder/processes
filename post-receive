@@ -1,0 +1,25 @@
+#!/bin/bash
+
+APP_PATH=/var/www/farms/frontend
+GIT_DIR=/var/repo/farms/frontend.git
+
+[[ -s "/usr/local/rvm/bin/rvm" ]] && . "/usr/local/rvm/bin/rvm"
+
+git --work-tree=${APP_PATH} --git-dir=${GIT_DIR} checkout -f
+echo "==========  CODE DEPLOYED =========="
+
+cd ${APP_PATH}
+/usr/local/rvm/gems/ruby-2.0.0-p353@global/bin/bundle install --deployment
+echo "==========  BUNDLED  =========="
+
+
+echo "==========  COMPILING ASSETS  =========="
+/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake assets:precompile RAILS_ENV=production
+
+echo "==========  RESTARTING APP  =========="
+mkdir -p tmp
+touch tmp/restart.txt
+echo "==========  APP RESTARTED  =========="
+
+#/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake db:migrate
+#echo "MIGRATED"
