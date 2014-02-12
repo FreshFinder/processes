@@ -15,6 +15,10 @@ echo "==========  MIGRATING  =========="
 /usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake db:migrate RAILS_ENV=production
 echo "==========  MIGRATED  =========="
 
+echo "==========  COMPILING ASSETS  =========="
+/usr/local/rvm/gems/ruby-2.0.0-p353/bin/rake assets:precompile RAILS_ENV=production
+echo "==========  ASSETS COMPILED  =========="
+
 echo "==========  RESTARTING APP  =========="
 mkdir -p tmp
 touch tmp/restart.txt
